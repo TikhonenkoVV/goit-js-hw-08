@@ -2,18 +2,14 @@ import vimeoPlayer from '@vimeo/player';
 import lodashThrottle from 'lodash.throttle';
 import storage from './storage';
 
-let x = 0;
 const iFrame = document.querySelector('#vimeo-player');
 
 const newVimeoPlayer = new vimeoPlayer(iFrame);
 
-const onPlay = e => storage.save('videoplayer-current-time', 2);
+const onTimeUpdate = e => storage.save('videoplayer-current-time', e.seconds);
 
-newVimeoPlayer.on('timeupdate', () => {
-    lodashThrottle(onPlay, 1000);
-    // console.log(storage);
-});
+newVimeoPlayer.on('timeupdate', lodashThrottle(onTimeUpdate, 1000));
 
-// console.log(localStorage);
+const currentTime = storage.load('videoplayer-current-time');
 
-// const log = console.log(curTime);
+if (currentTime) newVimeoPlayer.setCurrentTime(currentTime);
