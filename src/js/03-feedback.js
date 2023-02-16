@@ -7,7 +7,7 @@ const formData = {
     message: '',
 };
 
-if (localStorage.length > 0 && storage.load('feedback-form-state') !== null) {
+if (localStorage.length > 0 && storage.load('feedback-form-state')) {
     formData.email = storage.load('feedback-form-state').email;
     formData.message = storage.load('feedback-form-state').message;
     feedbackForm.email.value = storage.load('feedback-form-state').email;
