@@ -7,7 +7,7 @@ const formData = {
     message: '',
 };
 
-if (localStorage.length > 0) {
+if (localStorage.length > 0 && storage.load('feedback-form-state') !== null) {
     formData.email = storage.load('feedback-form-state').email;
     formData.message = storage.load('feedback-form-state').message;
     feedbackForm.email.value = storage.load('feedback-form-state').email;
@@ -31,7 +31,7 @@ const onFormSubmit = e => {
 
     console.log(formData);
     e.currentTarget.reset();
-    localStorage.clear();
+    localStorage.removeItem('feedback-form-state');
 };
 
 feedbackForm.addEventListener('submit', onFormSubmit);
