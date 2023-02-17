@@ -18,7 +18,6 @@ const onInput = e => {
     formData[e.target.name] = e.target.value;
 
     storage.save('feedback-form-state', formData);
-    console.log(formData);
 };
 
 feedbackForm.addEventListener('input', lodashThrottle(onInput, 500));
@@ -26,7 +25,7 @@ feedbackForm.addEventListener('input', lodashThrottle(onInput, 500));
 const onFormSubmit = e => {
     e.preventDefault();
 
-    const elments = ({ email, message } = e.currentTarget);
+    const elements = ({ email, message } = e.currentTarget);
 
     if (message.value !== '' && email.value !== '') {
         formData.email = email.value;
