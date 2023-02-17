@@ -2,7 +2,7 @@ import lodashThrottle from 'lodash.throttle';
 import storage from './storage';
 
 const feedbackForm = document.querySelector('.feedback-form');
-const formData = {
+let formData = {
     email: '',
     message: '',
 };
@@ -15,11 +15,10 @@ if (localStorage.length > 0 && storage.load('feedback-form-state')) {
 }
 
 const onInput = e => {
-    e.target.value === ''
-        ? (formData[e.target.name] = null)
-        : (formData[e.target.name] = e.target.value);
+    formData[e.target.name] = e.target.value;
 
     storage.save('feedback-form-state', formData);
+    console.log(formData);
 };
 
 feedbackForm.addEventListener('input', lodashThrottle(onInput, 500));
@@ -27,11 +26,22 @@ feedbackForm.addEventListener('input', lodashThrottle(onInput, 500));
 const onFormSubmit = e => {
     e.preventDefault();
 
-    formData[e.target.name] = e.target.value;
+    const elments = ({ email, message } = e.currentTarget);
 
-    console.log(formData);
-    e.currentTarget.reset();
-    localStorage.removeItem('feedback-form-state');
+    if (message.value !== '' && email.value !== '') {
+        formData.email = email.value;
+        formData.message = message.value;
+
+        console.log(formData);
+        e.currentTarget.reset();
+        localStorage.removeItem('feedback-form-state');
+        formData = {
+            email: '',
+            message: '',
+        };
+    } else {
+        alert('Будь ласка, заповніть всі поля!');
+    }
 };
 
 feedbackForm.addEventListener('submit', onFormSubmit);
